@@ -1,2 +1,2 @@
 # kubernetes-general
-This is general use kubernetes go code used for learning and testing.
+This is a general repo for small kubernetes go applications used for testing and learning.
