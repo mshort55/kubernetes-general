@@ -4,36 +4,36 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"os"
+	"log"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
 )
-
-// Usage: go run main.go --kubeconfig ~/.kube/config
 
 func main() {
 	kubeconfig := flag.String("kubeconfig", "missing kubeconfig", "location of kubeconfig")
 	flag.Parse()
 	config, err := clientcmd.BuildConfigFromFlags("", *kubeconfig)
 	if err != nil {
-		fmt.Printf("clientcmd failed: %v", err)
-		os.Exit(1)
+		fmt.Printf("unable to build client from flag: %v", err)
+		config, err = rest.InClusterConfig()
+		if err != nil {
+			log.Fatalf("unable to get in cluster config: %v", err)
+		}
 	}
 
 	clientset, err := kubernetes.NewForConfig(config)
 	if err != nil {
-		fmt.Printf("clientset failed: %v", err)
-		os.Exit(1)
+		log.Fatalf("unable to create clientset: %v", err)
 	}
 
 	namespace := "kube-system"
 
 	pods, err := clientset.CoreV1().Pods(namespace).List(context.Background(), metav1.ListOptions{})
 	if err != nil {
-		fmt.Printf("pod list failed: %v\n", err)
-		os.Exit(1)
+		log.Fatalf("pod list failed: %v\n", err)
 	}
 
 	fmt.Printf("Pods from %v namespace:\n", namespace)
@@ -43,8 +43,7 @@ func main() {
 
 	deployments, err := clientset.AppsV1().Deployments(namespace).List(context.Background(), metav1.ListOptions{})
 	if err != nil {
-		fmt.Printf("deployment list failed: %v\n", err)
-		os.Exit(1)
+		log.Fatalf("deployment list failed: %v\n", err)
 	}
 
 	fmt.Printf("\nDeployments from %v namespace:\n", namespace)
