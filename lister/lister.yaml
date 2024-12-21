@@ -18,7 +18,7 @@ spec:
         app: lister
     spec:
       containers:
-      - image: docker.io/mshort55/lister:0.1.1
+      - image: docker.io/mshort55/lister:0.1.2
         name: lister
         resources: {}
 status: {}

@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"time"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
@@ -17,16 +18,19 @@ func main() {
 	flag.Parse()
 	config, err := clientcmd.BuildConfigFromFlags("", *kubeconfig)
 	if err != nil {
-		fmt.Printf("unable to build client from flag: %v", err)
+		log.Printf("unable to build client from flag: %v\n", err)
+		log.Printf("trying to use pod service account token...\n")
 		config, err = rest.InClusterConfig()
 		if err != nil {
-			log.Fatalf("unable to get in cluster config: %v", err)
+			log.Fatalf("unable to get in cluster config: %v\n", err)
 		}
 	}
 
+	config.Timeout = 10 * time.Second
+
 	clientset, err := kubernetes.NewForConfig(config)
 	if err != nil {
-		log.Fatalf("unable to create clientset: %v", err)
+		log.Fatalf("unable to create clientset: %v\n", err)
 	}
 
 	namespace := "kube-system"
