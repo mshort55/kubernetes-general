@@ -3,7 +3,7 @@ module github.com/mshort55/kubernetes-general/tree/main/lister
 go 1.23.2
 
 require (
-	k8s.io/apimachinery v0.32.0
+	k8s.io/apimachinery v0.31.0
 	k8s.io/client-go v0.31.0
 )
 
