@@ -1,4 +1,4 @@
-#informer
+# informer
 
 This simple program is used to test informer factories.
 
