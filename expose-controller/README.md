@@ -19,6 +19,6 @@ Procedure:
 You should see new ingress and service resources created with the same name as the newly created deployment.
 
 Testing procedure:
-1. kubectl get ingress -n <new-deployment-namespace>
+1. kubectl get ingress -n new-deployment-namespace
 2. note IP in address column
-3. curl <address>:80/<deployment-name>
+3. curl ip-address:80/new-deployment-name
