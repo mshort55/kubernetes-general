@@ -1,4 +1,4 @@
-#expose-controller 
+# expose-controller 
 
 This is an example controller. It watches all cluster deployments and creates service and ingress
 resources if they do not already exist. It will expose each deployment pod on port 80.
